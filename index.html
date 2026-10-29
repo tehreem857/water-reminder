@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#38bdf8" />
+  <meta name="description" content="Your cute daily water reminder companion 💧" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="HydrateMe" />
+
+  <title>💧 Water Reminder</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.png" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- Header -->
+  <header>
+    <h1>💧 HydrateMe</h1>
+    <button id="menu-btn" aria-label="Settings">⚙️</button>
+  </header>
+
+  <!-- Notification permission banner -->
+  <div id="notif-banner" class="hidden">
+    <span>🔔 Enable notifications so reminders work in background!</span>
+    <button id="btn-allow-notif">Allow</button>
+  </div>
+
+  <!-- Hero — Character + bubble -->
+  <section id="hero">
+    <div id="character" class="idle">
+      <img class="pet-frame" id="f5" src="f5.png" alt="idle" />
+      <img class="pet-frame" id="f2" src="f2.png" alt="lifting" />
+      <img class="pet-frame" id="f3" src="f3.png" alt="sipping" />
+      <img class="pet-frame" id="f4" src="f4.png" alt="drinking" />
+    </div>
+    <div id="bubble">Hey! 💧 Remember to drink water!</div>
+  </section>
+
+  <!-- Stats -->
+  <section id="stats">
+    <div class="stat-card">
+      <div class="num" id="stat-glasses">0</div>
+      <div class="label">Glasses Today</div>
+    </div>
+    <div class="stat-card">
+      <div class="num" id="stat-streak">0</div>
+      <div class="label">Day Streak 🔥</div>
+    </div>
+    <div class="stat-card">
+      <div class="num" id="stat-goal">0%</div>
+      <div class="label">Daily Goal</div>
+    </div>
+  </section>
+
+  <!-- Countdown -->
+  <div id="countdown-card">
+    <div class="icon">⏰</div>
+    <div class="info">
+      <div class="title">Next reminder in</div>
+      <div class="time" id="countdown">60:00</div>
+    </div>
+  </div>
+
+  <!-- Water progress -->
+  <section id="water-section">
+    <h2>Today's progress (8 glasses)</h2>
+    <div id="progress-bar-wrap">
+      <div id="progress-bar"></div>
+    </div>
+    <div id="glasses-row">
+      <div id="glasses-filled"></div>
+    </div>
+  </section>
+
+  <!-- Action buttons -->
+  <div id="actions">
+    <button class="btn" id="btn-drank">✅ I drank water!</button>
+    <button class="btn" id="btn-snooze">😴 Snooze 10 min</button>
+  </div>
+
+</div><!-- #app -->
+
+<!-- ── Confetti layer ─────────────────────── -->
+<div id="confetti-wrap"></div>
+
+<!-- ── Reminder Overlay ───────────────────── -->
+<div id="reminder-overlay">
+  <div id="reminder-card">
+    <div id="reminder-char">
+      <img class="pet-frame" data-frame="f5" src="f5.png" alt="idle" />
+      <img class="pet-frame" data-frame="f2" src="f2.png" alt="lifting" />
+    </div>
+    <div id="reminder-msg">Time to drink some water! 💧</div>
+    <div id="reminder-sub">0/8 glasses today</div>
+    <div class="reminder-btns">
+      <button class="btn" id="reminder-drank" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:white;">
+        💧 I drank!
+      </button>
+      <button class="btn" id="reminder-snooze" style="background:#253047;border:1px solid #ffffff15;">
+        😴 Snooze
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Settings Panel ─────────────────────── -->
+<div id="settings">
+  <div id="settings-panel">
+    <h2>⚙️ Settings</h2>
+
+    <div class="setting-row">
+      <div>
+        <label>Your Name</label>
+        <small>For personalized reminders</small>
+      </div>
+      <input type="text" id="input-name" placeholder="e.g. Tehreem" maxlength="20" />
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <label>Reminder Interval</label>
+        <small>How often to remind you</small>
+      </div>
+      <select id="input-interval" onchange="updateInterval(this.value)">
+        <option value="30">Every 30 min</option>
+        <option value="60" selected>Every 1 hour</option>
+        <option value="90">Every 90 min</option>
+        <option value="120">Every 2 hours</option>
+      </select>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <label>Daily Goal</label>
+        <small>Glasses of water</small>
+      </div>
+      <input type="number" id="input-goal" value="8" min="4" max="16" style="width:70px" />
+    </div>
+
+    <button id="close-settings">Save & Close ✓</button>
+  </div>
+</div>
+
+<!-- ── Toast ──────────────────────────────── -->
+<div id="toast"></div>
+
+<script src="app.js"></script>
+<script>
+  // Interval setting handler
+  function updateInterval(minutes) {
+    const ms = parseInt(minutes) * 60 * 1000;
+    if (window.scheduleReminder) window.scheduleReminder(ms);
+  }
+</script>
+</body>
+</html>
